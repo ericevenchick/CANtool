@@ -10,6 +10,9 @@ var onDeviceClick = function () {
     conn = new canbus.slcan(this.innerHTML, function(e) { console.log(e); });
     console.log(conn);
     conn.open();
+    f = new canbus.frame(0x7ff);
+    setTimeout(function() {
+    conn.send(f);}, 1000);
 }
 
 var onGetDevices = function (devicePaths) {
