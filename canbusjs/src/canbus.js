@@ -1,52 +1,134 @@
+/**
+ * @file canbus.js
+ * @namespace canbusjs
+ * Module for interfacing with CAN bus systems
+ */
+
 "use strict";
 
-
-// top level variable for canbus library
+/**
+ * @module canbus
+ */
 var canbus = {};
 
-// can frame
+/**
+ * Defines a single CAN bus frame.
+ * @class canbus.frame
+ * @constructor
+ * @param {Number} id identifier of CAN frame
+*/
 canbus.frame = function(id) {
+/**
+ * Identifier of frame
+ * @property id
+ * @type Number
+ */
     this.id = id;
-    this.dlc = null;
+
+/**
+ * Data Length Code (DLC) of frame
+ * @property dlc
+ * @default 0
+ * @type Number
+ */
+    this.dlc = 0;
+
+/**
+ * Frame data
+ * @property data
+ * @type Array
+ */
     this.data = [];
+    
+/**
+ * Extended identifier flag
+ * @property is_ext_id
+ * @type Boolean
+ */
     this.is_ext_id = false;
+
+/**
+ * Remote flag frame
+ * @property is_remote
+ * @type Boolean
+ */
     this.is_remote = false;
 }
 
-// slcan interface
+/**
+ * Defines a serial line CAN (slcan) interface.
+ * @class canbus.slcan
+ * @constructor
+ * @param {String} dev_str path to, or name of serial device
+ * @param {Function} recvFrameCallback callback function for received frames
+ */
 canbus.slcan = function(dev_str, recvFrameCallback) {
-    this.dev_str = dev_str;
-    this.conn = null;
+    this._dev_str = dev_str;
+    this._conn = null;
 
     // variables to hold the incomming string until it terminates
     this._recv_count = 0;
     this._recv_str = "";
 
-    // callback for received frames
+/**
+ * Callback function to fire when frame is received
+ * @property recvFrameCallback
+ * @type Function
+ */
     this.recvFrameCallback = recvFrameCallback;
 }
-
-// slcan constants
+    
+/** 
+ * Length in characters of a standard CAN identifier
+ * @property STD_ID_LEN
+ * @type Number
+ * @final
+ */
 canbus.slcan.STD_ID_LEN = 3;
+
+/** 
+ * Length in characters of an extended CAN identifier
+ * @property EXT_ID_LEN
+ * @type Number
+ * @final
+ */
 canbus.slcan.EXT_ID_LEN = 8;
 
+/**
+ * Open a connection to the serial device
+ * @method open
+ * @private
+ */
 canbus.slcan.prototype.open = function() {
-    this.conn = chrome.serial.connect(this.dev_str, {},
+    this._conn = chrome.serial.connect(this._dev_str, {},
                                       this._serialOpenCallback.bind(this));
     chrome.serial.onReceive.addListener(this._serialRecvCallback.bind(this));
 }
 
+/** 
+ * callback for serial port opening
+ * @method _serialOpenCallback
+ * @param conn
+ * @private
+ */
 canbus.slcan.prototype._serialOpenCallback = function(conn) {
     if (!conn) {
-        console.log('failed to connect to device ' + this.dev_str);
+	// open failed!
+        console.log('failed to connect to device ' + this._dev_str);
         return;
     }
 
-    this.conn = conn;
-    console.log('connected to device ' + this.dev_str);
+    this._conn = conn;
+    console.log('connected to device ' + this._dev_str);
     chrome.serial.flush(conn.connectionId, function(){});
 }
 
+/** 
+ * callback for receiving data from the serial port
+ * @method _serialRecvCallback
+ * @param received
+ * @private
+ */
 canbus.slcan.prototype._serialRecvCallback = function(received) {
     var data = new Uint8Array(received.data);
 
@@ -71,6 +153,12 @@ canbus.slcan.prototype._serialRecvCallback = function(received) {
     }
 }
 
+/** 
+ * Helper function to parse a slcan string into a canbus.frame object
+ * @method canbus.slcan._parseFrame
+ * @param {String} string to parse into frame
+ * @private
+ */
 canbus.slcan.prototype._parseFrame = function(str) {
     var is_ext_id;
     var is_remote;
@@ -105,7 +193,6 @@ canbus.slcan.prototype._parseFrame = function(str) {
         throw "Invalid ID value";
     }
 
-
     // data length code is single digit after id
     dlc = (is_ext_id ? str.substr(1 + canbus.slcan.EXT_ID_LEN, 1) :
            str.substr(1 + canbus.slcan.STD_ID_LEN, 1));
@@ -133,5 +220,40 @@ canbus.slcan.prototype._parseFrame = function(str) {
     res.dlc = dlc;
     res.data = data;
 
+    return res;
+}
+
+/** 
+ * Helper function to pack a canbus.frame object into a slcan string
+ * @method canbus.slcan._packFrame
+ * @param {canbus.frame} frame to pack into string
+ * @private
+ */
+canbus.slcan.prototype._packFrame = function(frame) {
+    // set frame as data or remote
+    var res = frame.is_remote ? 'r' : 't';
+    // set frame as standard or extended id
+    if (frame.is_ext_id) {
+	res = res.toUpperCase();
+    }
+    
+    // add the identifier as hex, padded to the id length
+    var id_str = "0000000" + frame.id.toString(16);
+
+    if (frame.is_ext_id) {
+	res = res + id_str.substr(id_str.length - canbus.slcan.EXT_ID_LEN);
+    } else {
+	res = res + id_str.substr(id_str.length - canbus.slcan.STD_ID_LEN);
+    }
+
+    // add the data length code
+    res = res + frame.dlc.toString();
+
+    // add the data bytes
+    for (var i = 0; i < frame.dlc; i++) {
+	// add byte as hex string, padded to 2 characters
+	var byte_str = "0" + frame.data[i].toString(16);
+	res = res + byte_str.substr(byte_str.length - 2);
+    }
     return res;
 }
