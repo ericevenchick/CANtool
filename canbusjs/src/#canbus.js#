@@ -301,7 +301,7 @@ canbus.slcan.prototype._packFrame = function(frame) {
     for (var i = 0; i < frame.dlc; i++) {
         // add byte as hex string, padded to 2 characters
         var byte_str = "0" + frame.data[i].toString(16).toUpperCase();
-        res = res + byte_str.substr(byte_str.length - 2);
+	console.log
     }
 
     // terminate with \r
