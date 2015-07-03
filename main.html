@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="css/foundation.css">
+    <style>
+    </style>
+  </head>
+  <body style="width:90%; margin:auto;">
+    <button id="openDeviceList">Connect</button>
+    <div class="row">
+      <div style="overflow:auto; height: 400px;">
+        <table id="msgs" style="width:100%;">
+          <thead>
+            <th>#</th>
+            <th>Timestamp</th>
+            <th>ID</th>
+            <th>Type</th>
+            <th>DLC</th>
+            <th>B0</th>
+            <th>B1</th>
+            <th>B2</th>
+            <th>B3</th>
+            <th>B4</th>
+            <th>B5</th>
+            <th>B6</th>
+            <th>B7</th>
+          </thead>
+        </table>
+      </div>
+    </div>
+
+    <form id="txForm" action="">
+      <fieldset>
+        <legend>Transmit Message</legend>
+        <div class="row">
+          <div class="small-2 columns">
+            <label> ID
+              <input type="text" placeholder="0x123" id="txId">
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label> DLC
+              <input type="text" placeholder="0-8" id="txDlc">
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label> B0
+              <input type="text" placeholder="0" id="txB0">
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label> B1
+              <input type="text" placeholder="1" id="txB1">
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label> B2
+              <input type="text" placeholder="2" id="txB2">
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label> B3
+              <input type="text" placeholder="3" id="txB3">
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label> B4
+              <input type="text" placeholder="4" id="txB4">
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label> B5
+              <input type="text" placeholder="5" id="txB5">
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label> B6
+              <input type="text" placeholder="6" id="txB6">
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label> B7
+              <input type="text" placeholder="7" id="txB7">
+            </label>
+          </div>
+
+          <div class="small-3 columns end">
+	    <label>
+            <input type="submit" class="button small" id="txSend" value="Send">
+	    </label>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+
+  </body>
+  <script src="canbusjs/src/canbus.js"></script>
+  <script src="main.js"></script>
+</html>

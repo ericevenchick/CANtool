@@ -1,6 +1,6 @@
 {
-    "name": "test",
-    "description": "a test app",
+    "name": "CANtool",
+    "description": "A CAN bus utility",
     "version": "0.1",
     "manifest_version": 2,
     "permissions": ["serial"],

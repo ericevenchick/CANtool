@@ -1,34 +1,29 @@
 var conn = null;
 
 window.onload = function () {
-    chrome.serial.getDevices(onGetDevices);
-}
+    window.startTime = Date.now();
+    window.onBus = false;
 
-var onDeviceClick = function () {
-    console.log(this.innerHTML);
+    var openDeviceList = document.getElementById('openDeviceList');
+    openDeviceList.addEventListener('click', function() {
+        chrome.app.window.create('devicelist.html',
+                                 {'width':300, 'height': 300});
+    });
 
-    conn = new canbus.slcan(this.innerHTML, function(e) { console.log(e); });
-    console.log(conn);
-    conn.open();
-    f = new canbus.frame(0x7ff);
-    setTimeout(function() {
-    conn.send(f);}, 1000);
-}
+    var txForm = document.getElementById('txForm');
+    txForm.addEventListener('submit', function() {
+        var id = Number(document.getElementById('txId').value);
+        var dlc = Number(document.getElementById('txDlc').value);
+        var data = [];
+        for (var i=0; i < dlc; i++) {
+            data.push(Number(document.getElementById('txB' + i).value));
+            console.log(data);
+        }
 
-var onGetDevices = function (devicePaths) {
-    deviceUl = document.getElementById("deviceList");
-
-    deviceList.innerHTML = ""
-    for (var i=0; i < devicePaths.length; i++) {
-        var li = document.createElement("li");
-        var a = document.createElement("a");
-
-        a.href = "#";
-        a.onclick = onDeviceClick;
-        a.appendChild(document.createTextNode(devicePaths[i].path));
-
-        li.appendChild(a);
-        deviceUl.appendChild(li);
-    }
-
+        f = new canbus.frame(id);
+        f.dlc = dlc;
+        f.data = data;
+        conn.send(f);
+        return false;
+    });
 }
