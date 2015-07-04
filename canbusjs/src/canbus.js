@@ -70,8 +70,9 @@ canbus.frame = function(id) {
  * @param {String} dev_str path to, or name of serial device
  * @param {Function} recvFrameCallback callback function for received frames
  */
-canbus.slcan = function(dev_str, recvFrameCallback) {
+canbus.slcan = function(dev_str, speed, recvFrameCallback) {
     this._dev_str = dev_str;
+    this._speed = speed;
     this._conn = null;
 
     // variables to hold the incomming string until it terminates
@@ -165,7 +166,7 @@ canbus.slcan.prototype._serialOpenCallback = function(conn) {
     chrome.serial.flush(conn.connectionId, function(){});
 
     // open can communication
-    this._serialWrite("S4\r");
+    this._serialWrite("S" + this._speed + "\r");
     this._serialWrite("O\r");
 }
 
