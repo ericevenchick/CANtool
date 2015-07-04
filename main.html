@@ -6,7 +6,9 @@
     </style>
   </head>
   <body style="width:90%; margin:auto;">
-    <button id="openDeviceList">Connect</button>
+    <div class="row">
+      <ul id="deviceList"></ul>
+    </div>
     <div class="row">
       <div style="overflow:auto; height: 400px;">
         <table id="msgs" style="width:100%;">
@@ -85,9 +87,9 @@
           </div>
 
           <div class="small-3 columns end">
-	    <label>
-            <input type="submit" class="button small" id="txSend" value="Send">
-	    </label>
+            <label>
+              <input type="submit" class="button small" id="txSend" value="Send">
+            </label>
           </div>
         </div>
       </fieldset>
