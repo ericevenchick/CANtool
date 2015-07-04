@@ -5,25 +5,24 @@ window.onload = function () {
     window.startTime = Date.now();
     window.onBus = false;
 
-    var txForm = document.getElementById('txForm');
-    txForm.addEventListener('submit', function() {
+    var txSend = document.getElementById('txSend');
+    txSend.addEventListener('click', function(e) {
+	e.preventDefault();
         var id = Number(document.getElementById('txId').value);
         var dlc = Number(document.getElementById('txDlc').value);
         var data = [];
+
+	// convert data bytes from text inputs to byte array
         for (var i=0; i < dlc; i++) {
             data.push(Number(document.getElementById('txB' + i).value));
-            console.log(data);
         }
 
         f = new canbus.frame(id);
         f.dlc = dlc;
         f.data = data;
         conn.send(f);
-        return false;
     });
-}
 
-window.onload = function() {
     chrome.serial.getDevices(onGetDevices);
 }
 
@@ -32,7 +31,7 @@ var onDeviceClick = function () {
         throw "already connected to device!";
     }
 
-    var conn = new canbus.slcan(this.innerHTML, 4, function(e) {
+    conn = new canbus.slcan(this.innerHTML, 4, function(e) {
         var table = document.getElementById("msgs");
         var row = table.insertRow(1);
         var countCell = row.insertCell(0);
@@ -67,14 +66,6 @@ var onDeviceClick = function () {
     window.onBus = true;
 
     conn.open();
-
-    f = new canbus.frame(0x123);
-    f.dlc=8;
-    f.data = [1,2,3,4,5,6,7,8];
-    /*
-      setTimeout(function() {
-      conn.send(f);}, 1000);
-    */
 }
 
 var onGetDevices = function (devicePaths) {
