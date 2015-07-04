@@ -68,6 +68,7 @@ canbus.frame = function(id) {
  * @class canbus.slcan
  * @constructor
  * @param {String} dev_str path to, or name of serial device
+ * @param {Integer} speed speed setting to use (0-8)
  * @param {Function} recvFrameCallback callback function for received frames
  */
 canbus.slcan = function(dev_str, speed, recvFrameCallback) {
