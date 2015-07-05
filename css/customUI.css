@@ -1,0 +1,54 @@
+body.f-topbar-fixed {
+	margin-left: 10px;
+	margin-right: 10px;
+	padding-top: 55px;
+}
+
+.alpha {
+	padding-left: 0px;
+	margin-left: 0px;
+}
+
+.omega {
+	padding-right: 0px;
+	margin-right: 0px;
+}
+
+.playground {
+}
+
+.tool {
+	padding: 0;
+	display: inline-block;
+	border: 1px solid #333333;
+	width: 100%;
+}
+
+li.tool-name {
+	color: #FFF;
+	padding:5px;
+	font-size: 14px;
+}
+
+nav.tool-bar {
+	height: auto;
+}
+
+th {
+	font-size: 12px;
+}
+
+.hide {
+	display: none;
+}
+
+.tool-colapse-expand {
+	color: #FFF !important;
+	padding:5px;
+}
+
+.tool-fullscreen {
+	color: #FFF !important;
+	font-size: 14px;
+	padding:5px;
+}
