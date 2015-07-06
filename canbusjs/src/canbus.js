@@ -15,7 +15,7 @@ var canbus = {};
  * Defines a single CAN bus frame.
  * @class canbus.frame
  * @constructor
- * @param {Number} id identifier of CAN frame
+ * @param {Number} id Identifier of CAN frame
  */
 canbus.frame = function(id) {
     /**
@@ -67,9 +67,10 @@ canbus.frame = function(id) {
  * Defines a serial line CAN (slcan) interface.
  * @class canbus.slcan
  * @constructor
- * @param {String} dev_str path to, or name of serial device
- * @param {Integer} speed speed setting to use (0-8)
- * @param {Function} recvFrameCallback callback function for received frames
+ * @param {String} dev_str Path to, or name of serial device
+ * @param {Integer} speed Speed setting to use (0-8)
+ * @param {Function} recvFrameCallback Callback function to call when frame is
+ * received
  */
 canbus.slcan = function(dev_str, speed, recvFrameCallback) {
     this._dev_str = dev_str;
@@ -117,7 +118,7 @@ canbus.slcan.prototype.open = function() {
 /**
  * Send a CAN frame
  * @method send
- * @param {canbus.frame} frame frame to send
+ * @param {canbus.frame} frame Frame to send
  */
 canbus.slcan.prototype.send = function(frame) {
     // ensure that we have a connection to the device
@@ -134,7 +135,7 @@ canbus.slcan.prototype.send = function(frame) {
 
 /**
  * Send a string on the serial port
- * @param {String} str string to send
+ * @param {String} str String to send
  * @private
  */
 canbus.slcan.prototype._serialWrite = function(str) {
@@ -150,9 +151,9 @@ canbus.slcan.prototype._serialWrite = function(str) {
 }
 
 /**
- * callback for serial port opening
+ * Callback for serial port opening
  * @method _serialOpenCallback
- * @param conn
+ * @param conn Connection that was opened
  * @private
  */
 canbus.slcan.prototype._serialOpenCallback = function(conn) {
@@ -172,9 +173,9 @@ canbus.slcan.prototype._serialOpenCallback = function(conn) {
 }
 
 /**
- * callback for receiving data from the serial port
+ * Callback for parsing received data from the serial port
  * @method _serialRecvCallback
- * @param received
+ * @param received Data received from serial port
  * @private
  */
 canbus.slcan.prototype._serialRecvCallback = function(received) {
@@ -207,7 +208,7 @@ canbus.slcan.prototype._serialRecvCallback = function(received) {
 /**
  * Helper function to parse a slcan string into a canbus.frame object
  * @method canbus.slcan._parseFrame
- * @param {String} string to parse into frame
+ * @param {String} str String to parse into frame
  * @private
  */
 canbus.slcan.prototype._parseFrame = function(str) {
@@ -276,7 +277,7 @@ canbus.slcan.prototype._parseFrame = function(str) {
 /**
  * Helper function to pack a canbus.frame object into a slcan string
  * @method canbus.slcan._packFrame
- * @param {canbus.frame} frame to pack into string
+ * @param {canbus.frame} frame Frame to pack into string
  * @private
  */
 canbus.slcan.prototype._packFrame = function(frame) {
