@@ -7,7 +7,7 @@
 "use strict";
 
 /**
- * @module canbus.isotp
+ * @module isotp
  */
 
 /**

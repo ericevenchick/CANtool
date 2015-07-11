@@ -7,7 +7,7 @@
 "use strict";
 
 /**
- * @module canbus.obd
+ * @module obd
  */
 
 /**
