@@ -7,6 +7,7 @@
 "use strict";
 
 /**
+ * Top level module for CANbusJS
  * @module canbus
  */
 var canbus = {};

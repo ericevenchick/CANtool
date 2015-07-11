@@ -7,9 +7,18 @@
 "use strict";
 
 /**
- * @class canbus.isotp
+ * @module canbus.isotp
  */
 
+/**
+ * Defines an ISOTP interface
+ * @class canbus.isotp
+ * @constructor
+ * @param {Function} sendFrameCallback Function to be called by ISOTP interface
+ * when a frame is to be sent. Takes a frame to send as an argument.
+ * @param {Function} receivedPayloadCallback Function to be called by ISOTP
+ * interface when a full payload is received. Takes payload data as an argument.
+ */
 canbus.isotp = function(sendFrameCallback, receivedPayloadCallback) {
     // stores the ID we're transmitting on
     this._tx_id = undefined;
@@ -101,7 +110,7 @@ canbus.isotp.prototype.startTransmission = function(id, data) {
     this.sendFrameCallback(ff);
 }
 
-canbus.isotp.prototype.sendBlock = function() {
+canbus.isotp.prototype._sendBlock = function() {
 
     if (!this.txInProgress()) {
         throw "no data to transmit";
@@ -140,6 +149,11 @@ canbus.isotp.prototype.sendBlock = function() {
     }
 }
 
+/**
+ * Parses a single frame as ISOTP data.
+ * @method parseFrame
+ * @param {canbus.frame} frame Frame to parse
+ */
 canbus.isotp.prototype.parseFrame = function(frame) {
     // get the frame type, upper nybble of first byte
     var frame_type = frame.data[0] >> 4;
@@ -153,8 +167,8 @@ canbus.isotp.prototype.parseFrame = function(frame) {
             result.push(frame.data[i+1]);
         }
 
-	// all data received, return result
-	return result;
+	// all data received, call the callback
+	this.receivedPayloadCallback(result);
     }
 
     if (frame_type == 1) {
@@ -235,7 +249,7 @@ canbus.isotp.prototype.parseFrame = function(frame) {
 	this._tx_seperation = frame.data[2];
 
 	// once a FC frame is received, we should send a block
-	this.sendBlock();
+	this._sendBlock();
 	
 	// TODO: rest of this...
     }
