@@ -89,16 +89,73 @@ var onGetDevices = function (devicePaths) {
 
 //sets up the UI elements on each panel/tool
 function setupUI() {
-    $('.tool-colapse-expand').on('click', function(){
-        if($(this).children('.fi-arrow-up').hasClass('hide')) {
-            $(this).children('.fi-arrow-up').removeClass('hide');
-            $(this).children('.fi-arrow-down').addClass('hide')
+    //Log Table
+    $('#msgs').DataTable({
+        paging: false,
+        info: false,
+        searching: false,
+        scrollY: "200px",
+        order: [[ 0, "desc" ]]
+    });
+
+    $('.soloPanel').on('click', function(){
+        if($(this).children('.glyphicon-resize-full').hasClass('hidden')) {
+            $(this).children('.glyphicon-resize-full').removeClass('hidden');
+            $(this).children('.glyphicon-resize-small').addClass('hidden')
         }
         else {
-            $(this).children('.fi-arrow-up').addClass('hide');
-            $(this).children('.fi-arrow-down').removeClass('hide')
+            $(this).children('.glyphicon-resize-full').addClass('hidden');
+            $(this).children('.glyphicon-resize-small').removeClass('hidden')
+        }
+
+        //showing all elements
+        if($(this).parent().parent().parent().parent().hasClass('soloPanel')) {
+            $(this).parent().parent().parent().parent().toggleClass('soloPanel', 1000);
+            $('.panel').each(function(){
+                $(this).removeClass('hidden');
+            })
+        } else {
+            $(this).parent().parent().parent().parent().toggleClass('soloPanel', 1000);
+            $('.panel').each(function(){
+                if(!$(this).hasClass('soloPanel')) {
+                    $(this).toggleClass('hidden');
+                }
+            })
+        }
+    });
+
+    $('.collapsePanel').on('click', function(){
+        if($(this).children('.glyphicon-chevron-up').hasClass('hidden')) {
+            $(this).children('.glyphicon-chevron-up').removeClass('hidden');
+            $(this).children('.glyphicon-chevron-down').addClass('hidden')
+        }
+        else {
+            $(this).children('.glyphicon-chevron-up').addClass('hidden');
+            $(this).children('.glyphicon-chevron-down').removeClass('hidden')
         }
         
-        $(this).parent().parent().parent().parent().children('.tool-body').toggleClass('hide', 1000);
+        $(this).parent().parent().parent().parent().children('.panel-body').toggleClass('hidden', 1000);
+        $(this).parent().parent().parent().parent().toggleClass('panel-collapse', 1000);
     })
+}
+
+var msgsTableCount = 0;
+function addToMsgs(Timestamp, ID, Type, B0, B1, B2, B3, B4, B5, B6, B7) {
+    var tableMsgs = $('#msgs').DataTable();
+    tableMsgs.row.add( [
+        msgsTableCount + 1,
+        Timestamp,
+        ID,
+        Type,
+        B0,
+        B1,
+        B2,
+        B3,
+        B4,
+        B5,
+        B6,
+        B7
+    ] ).draw();
+
+    msgsTableCount++;
 }

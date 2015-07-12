@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<!-- JQuery -->
 	<script src="js/vendor/jquery-1.11.3.min.js"></script>
 	<script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
+
+	<!-- Bootstrap -->
 	<script src="js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	
+	<!-- Datatables -->
+	<!-- <link rel="stylesheet" href="js/vendor/jquery.dataTables.css"> -->
+	<link rel="stylesheet" href="js/vendor/dataTables.bootstrap.css">
+	<script src="js/vendor/jquery.dataTables.js"></script>
+	<script src="js/vendor/dataTables.bootstrap.js"></script>
+
+	<!-- Custom CSS -->
 	<link rel="stylesheet" href="css/customUI.css">
 </head>
 <body>
@@ -19,12 +30,12 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav navbar-right">
-						<li class=""><a href="#">Selected Device: </a></li>
+<!-- 						<li class=""><a class="no-hover" id="connectedDeviceLabel" href="#">Device:</a></li> -->
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="selectedDevice">Current Device Here</span> <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="selectedDevice">Select Device</span> <span class="caret"></span></a>
 							<ul id="deviceListDropdown" class="dropdown-menu"></ul>
 						</li>
-						<li class=""><a data-reveal-id="uiSettings" href="#"><i class="fi-wrench"></i></a></li>
+						<li class=""><a data-toggle="modal" data-target="#UISettings" href="#"><i class="glyphicon glyphicon-cog"></i></a></li>
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
@@ -40,31 +51,39 @@
 				<div class="panel-heading col-xs-12">
 					<h3 class="panel-title col-xs-6">Log</h3>
 					<div class="panel-nav col-xs-6 omega">
-						<div class="btn-group pull-right" role="group" aria-label="...">
-							<button type="button" class="btn btn-default panel-btn"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
-							<button type="button" class="btn btn-default panel-btn"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></button>
+						<div class="btn-group pull-right" role="group">
+							<button type="button" class="btn btn-default panel-btn collapsePanel">
+								<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-chevron-down hidden" aria-hidden="true"></span>
+							</button>
+							<button type="button" class="btn btn-default panel-btn soloPanel">
+								<span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-resize-small hidden" aria-hidden="true"></span>
+							</button>
 						</div>
 					</div>
 				</div>
 
 				<!-- Table -->
-				<table id="msgs" class="table">
+				<div class="panel-body">
+				<table id="msgs" class="table table-striped table-bordered datatable-msgs">
 					<thead>
-						<th>#</th>
-						<th>Timestamp</th>
-						<th>ID</th>
-						<th>Type</th>
-						<th>DLC</th>
-						<th>B0</th>
-						<th>B1</th>
-						<th>B2</th>
-						<th>B3</th>
-						<th>B4</th>
-						<th>B5</th>
-						<th>B6</th>
-						<th>B7</th>
+						<th class="msgs-header">#</th>
+						<th class="msgs-header">Timestamp</th>
+						<th class="msgs-header">ID</th>
+						<th class="msgs-header">Type</th>
+						<th class="msgs-header">DLC</th>
+						<th class="msgs-header">B0</th>
+						<th class="msgs-header">B1</th>
+						<th class="msgs-header">B2</th>
+						<th class="msgs-header">B3</th>
+						<th class="msgs-header">B4</th>
+						<th class="msgs-header">B5</th>
+						<th class="msgs-header">B6</th>
+						<th class="msgs-header">B7</th>
 					</thead>
 				</table>
+				</div>
 			</div>
 
 			<!-- PANEL #2 -->
@@ -72,9 +91,15 @@
 				<div class="panel-heading col-xs-12">
 					<h3 class="panel-title col-xs-6">Transmit Message</h3>
 					<div class="panel-nav col-xs-6 omega">
-						<div class="btn-group pull-right" role="group" aria-label="...">
-							<button type="button" class="btn btn-default panel-btn"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
-							<button type="button" class="btn btn-default panel-btn"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></button>
+						<div class="btn-group pull-right" role="group">
+							<button type="button" class="btn btn-default panel-btn collapsePanel">
+								<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-chevron-down hidden" aria-hidden="true"></span>
+							</button>
+							<button type="button" class="btn btn-default panel-btn soloPanel">
+								<span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+								<span class="glyphicon glyphicon-resize-small hidden" aria-hidden="true"></span>
+							</button>
 						</div>
 					</div>
 				</div>
@@ -124,7 +149,7 @@
 						<div class="form-group transmit-form col-xs-1">
 							<div class="btn-group btn-group-justified" role="group">
 								<div class="btn-group" role="group">
-									<button type="submit" class="btn btn-default">Send</button>
+									<button type="submit" id="txSend" class="btn btn-default" style="padding-left:0px; padding-right:0px">Send</button>
 								</div>
 							</div>
 						</div>
@@ -136,8 +161,23 @@
 	</div>
 
 <!-- Settings Modal -->
-
-<!-- @Phil: Add settings modal here... -->
+<div class="modal fade" id="UISettings" tabindex="-1" role="dialog" aria-labelledby="Settings">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="Settings">Settings</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 <script src="canbusjs/src/canbus.js"></script>

@@ -10,6 +10,11 @@
 	padding-right: 0px;
 }
 
+a.navbar-brand:hover {
+	color: #9d9d9d !important;
+	cursor: default;
+}
+
 .panel-btn {
 	/*padding: 2px;*/
 	border: 0px;
@@ -34,10 +39,32 @@
 	margin-bottom: 0px;
 }
 
+#connectedDeviceLabel {
+	color: #9d9d9d;
+}
+
 .panel-body {
 	padding-left: 0px;
 	padding-right: 0px;
 	padding-bottom: 0px;
+}
+
+.panel-heading {
+	border: 1px solid #ddd;
+}
+
+.panel {
+	border: none;
+}
+
+.panel-collapse {
+	display: flex;
+}
+
+.panel-body {
+	border-right: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
 }
 
 input.transmit-form {
@@ -48,4 +75,25 @@ input.transmit-form {
 
 input.transmit-form:focus {
 	border-left-width: 1px;
+}
+
+th.msgs-header {
+	border-bottom: 0px solid !important; /*another hack for datatables...*/
+}
+
+#msgs {
+	margin-top: -2px !important; /*Hack...*/
+	margin-bottom: -2px !important; /*Hack...*/
+	border-left-width: 0;
+	border-right-width: 0;
+}
+
+.dataTables_scroll {
+	  margin-top: -8px; /*hack for datatables positioning...*/
+}
+
+.datatable-msgs {
+	  border-left-width: 0;
+  border-right-width: 0;
+  border-bottom-width: 1px;
 }
