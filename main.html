@@ -1,198 +1,145 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="js/vendor/jquery.js"></script>
-	<link rel="stylesheet" href="css/foundation.css">
+	<script src="js/vendor/jquery-1.11.3.min.js"></script>
+	<script src="js/vendor/jquery-migrate-1.2.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/customUI.css">
-	<link rel="stylesheet" href="icons/foundation-icons.css">
-	<style>
-	</style>
 </head>
 <body>
 	<div class="fixed">
-		<nav class="top-bar" data-topbar role="navigation">
-			<ul class="title-area">
-				<li class="name">
-					<h1><a href="#">CANtool</a></h1>
-				</li>
-			</ul>
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">CANtool</a>
+				</div>
 
-			<section class="top-bar-section">
-				<ul class="right">
-					<li class=""><a href="#">Selected Device: </a></li>
-					<li class="has-dropdown">
-						<a href="#"><span id="selectedDevice">Current Device Here</span></a>
-						<ul id="deviceListDropdown" class="dropdown"></ul>
-					</li>
-					<li class=""><a data-reveal-id="uiSettings" href="#"><i class="fi-wrench"></i></a></li>
-				</ul>
-			</section>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav navbar-right">
+						<li class=""><a href="#">Selected Device: </a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="selectedDevice">Current Device Here</span> <span class="caret"></span></a>
+							<ul id="deviceListDropdown" class="dropdown-menu"></ul>
+						</li>
+						<li class=""><a data-reveal-id="uiSettings" href="#"><i class="fi-wrench"></i></a></li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
 		</nav>
 	</div>
 
-	<div class="playground small-12 columns alpha omega">
+	<div class="playground col-xs-12">
 
 		<!-- COLUMN #1 -->
-		<div class="small-12 columns alpha omega">
-
+		<div class="col-xs-12 alpha omega">
 			<!-- PANNEL #1 -->
-			<div class="panel tool">
-				<nav class="top-bar tool-bar" data-topbar role="navigation">
-					<ul class="title-area">
-						<li class="tool-name">
-							Log
-						</li>
-					</ul>
-					<section class="top-bar-section">
-						<ul class="right">
-							<li class="tool-colapse-expand">
-								<i class="fi-arrow-down hide"></i>
-								<i class="fi-arrow-up"></i>
-							</li>
-							<!-- <li class="tool-fullscreen"><i class="fi-arrows-out"></i></li> -->
-						</ul>
-					</section>
-				</nav>
-				<div class="small-12 columns alpha omega tool-body">
-					<div style="overflow:auto; height: 400px;">
-						<table id="msgs" style="width:100%;">
-							<thead>
-								<th>#</th>
-								<th>Timestamp</th>
-								<th>ID</th>
-								<th>Type</th>
-								<th>DLC</th>
-								<th>B0</th>
-								<th>B1</th>
-								<th>B2</th>
-								<th>B3</th>
-								<th>B4</th>
-								<th>B5</th>
-								<th>B6</th>
-								<th>B7</th>
-							</thead>
-						</table>
+			<div class="panel panel-default">
+				<div class="panel-heading col-xs-12">
+					<h3 class="panel-title col-xs-6">Log</h3>
+					<div class="panel-nav col-xs-6 omega">
+						<div class="btn-group pull-right" role="group" aria-label="...">
+							<button type="button" class="btn btn-default panel-btn"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
+							<button type="button" class="btn btn-default panel-btn"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></button>
+						</div>
 					</div>
 				</div>
+
+				<!-- Table -->
+				<table id="msgs" class="table">
+					<thead>
+						<th>#</th>
+						<th>Timestamp</th>
+						<th>ID</th>
+						<th>Type</th>
+						<th>DLC</th>
+						<th>B0</th>
+						<th>B1</th>
+						<th>B2</th>
+						<th>B3</th>
+						<th>B4</th>
+						<th>B5</th>
+						<th>B6</th>
+						<th>B7</th>
+					</thead>
+				</table>
 			</div>
 
 			<!-- PANEL #2 -->
-			<div class="panel tool">
-				<nav class="top-bar tool-bar" data-topbar role="navigation">
-					<ul class="title-area">
-						<li class="tool-name">
-							Transmit Message
-						</li>
-					</ul>
-					<section class="top-bar-section">
-						<ul class="right">
-							<li class="tool-colapse-expand">
-								<i class="fi-arrow-down hide"></i>
-								<i class="fi-arrow-up"></i>
-							</li>
-							<!-- <li class="tool-fullscreen"><i class="fi-arrows-out"></i></li> -->
-						</ul>
-					</section>
-				</nav>
-				<div class="small-12 columns alpha omega tool-body">
-					<form id="txForm" action="">
-							<div class="small-2 columns">
-								<label> ID
-									<input type="text" placeholder="0x123" id="txId">
-								</label>
-							</div>
-							<div class="small-1 columns">
-								<label> DLC
-									<input type="text" placeholder="0-8" id="txDlc">
-								</label>
-							</div>
-							<div class="small-1 columns">
-								<label> B0
-									<input type="text" placeholder="0" id="txB0">
-								</label>
-							</div>
-							<div class="small-1 columns">
-								<label> B1
-									<input type="text" placeholder="1" id="txB1">
-								</label>
-							</div>
-							<div class="small-1 columns">
-								<label> B2
-									<input type="text" placeholder="2" id="txB2">
-								</label>
-							</div>
-							<div class="small-1 columns">
-								<label> B3
-									<input type="text" placeholder="3" id="txB3">
-								</label>
-							</div>
-							<div class="small-1 columns">
-								<label> B4
-									<input type="text" placeholder="4" id="txB4">
-								</label>
-							</div>
-							<div class="small-1 columns">
-								<label> B5
-									<input type="text" placeholder="5" id="txB5">
-								</label>
-							</div>
-							<div class="small-1 columns">
-								<label> B6
-									<input type="text" placeholder="6" id="txB6">
-								</label>
-							</div>
-							<div class="small-1 columns">
-								<label> B7
-									<input type="text" placeholder="7" id="txB7">
-								</label>
-							</div>
+			<div class="panel panel-default">
+				<div class="panel-heading col-xs-12">
+					<h3 class="panel-title col-xs-6">Transmit Message</h3>
+					<div class="panel-nav col-xs-6 omega">
+						<div class="btn-group pull-right" role="group" aria-label="...">
+							<button type="button" class="btn btn-default panel-btn"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
+							<button type="button" class="btn btn-default panel-btn"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></button>
+						</div>
+					</div>
+				</div>
 
-							<div class="small-3 columns end">
-								<label>
-									<input type="submit" class="button small" id="txSend" value="Send">
-								</label>
+				<div class="panel-body">
+					<form class="form">
+						<div class="form-group transmit-form col-xs-2">
+							<label class="sr-only" for="txID">ID</label>
+							<input type="email" class="transmit-form form-control" id="txID" placeholder="ID">
+						</div> 
+						<div class="form-group transmit-form col-xs-1">
+							<label class="sr-only" for="txDlc">DLC</label>
+							<input class="transmit-form form-control col-xs-1" type="text" placeholder="DLC (0-8)" id="txDlc">
+						</div>
+						<div class="form-group transmit-form col-xs-1">
+							<label class="sr-only" for="txB0">B0</label>
+							<input type="text" class="transmit-form form-control" id="txB0" placeholder="B0">
+						</div>
+						<div class="form-group transmit-form col-xs-1">
+							<label class="sr-only" for="txB1">B1</label>
+							<input type="text" class="transmit-form form-control" id="txB1" placeholder="B1">
+						</div>
+						<div class="form-group transmit-form col-xs-1">
+							<label class="sr-only" for="txB2">B2</label>
+							<input type="text" class="transmit-form form-control" id="txB2" placeholder="B2">
+						</div>
+						<div class="form-group transmit-form col-xs-1">
+							<label class="sr-only" for="txB3">B3</label>
+							<input type="text" class="transmit-form form-control" id="txB3" placeholder="B3">
+						</div>
+						<div class="form-group transmit-form col-xs-1">
+							<label class="sr-only" for="txB4">B4</label>
+							<input type="text" class="transmit-form form-control" id="txB4" placeholder="B4">
+						</div>
+						<div class="form-group transmit-form col-xs-1">
+							<label class="sr-only" for="txB5">B5</label>
+							<input type="text" class="transmit-form form-control" id="txB5" placeholder="B5">
+						</div>
+						<div class="form-group transmit-form col-xs-1">
+							<label class="sr-only" for="txB6">B6</label>
+							<input type="text" class="transmit-form form-control" id="txB6" placeholder="B6">
+						</div>
+						<div class="form-group transmit-form col-xs-1">
+							<label class="sr-only" for="txB7">B7</label>
+							<input type="text" class="transmit-form form-control" id="txB7" placeholder="B7">
+						</div>
+						<div class="form-group transmit-form col-xs-1">
+							<div class="btn-group btn-group-justified" role="group">
+								<div class="btn-group" role="group">
+									<button type="submit" class="btn btn-default">Send</button>
+								</div>
 							</div>
+						</div>
 					</form>
 				</div>
 			</div>
-
-
 		</div>
 		<!-- END OF COLUMN #1 -->
-
-		<!-- COLUMN #2 -->
-<!-- 		<div class="small-2 columns">
-			
-		</div> -->
-		<!-- END OF COLUMN #2 -->
 	</div>
 
 <!-- Settings Modal -->
-<div id="uiSettings" class="reveal-modal" data-reveal aria-labelledby="uiSettingsTitle" aria-hidden="true" role="dialog">
-	<h2 id="uiSettingsTitle">Settings</h2>
-	<div class="large-12 columns">
-		<label>Bitrate
-			<div class="row">
-				<div class="small-10 medium-11 columns">
-				<div class="range-slider" data-slider="1" data-options="display_selector: #sliderBitrate; start: 1; end: 10;">
-						<span class="range-slider-handle" role="slider" tabindex="0"></span>
-						<span class="range-slider-active-segment"></span>
-					</div>
-				</div>
-				<div class="small-2 medium-1 columns">
-					<span id="sliderBitrate" style="display: block;margin-top: 17px;">5</span>
-				</div>
-			</div>
-		</label>
-	</div>
 
-	<p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
-	
-	<a class="close-reveal-modal" aria-label="Close">&#215;</a>
-</div>
+<!-- @Phil: Add settings modal here... -->
+
 </body>
-<script src="js/foundation.min.js"></script>
-<script src="js/foundation/foundation.reveal.js"></script>
 <script src="canbusjs/src/canbus.js"></script>
 <script src="main.js"></script>
 </html>
