@@ -3,7 +3,6 @@ window.count = 0;
 var bitRate = null; 
 
 window.onload = function () {
-    $(document).foundation();
     setupUI();
     window.startTime = Date.now();
     window.onBus = false;
