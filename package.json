@@ -1,0 +1,14 @@
+{
+    "name": "CANtact",
+    "version": "0.0.1",
+    "main": "main.html",
+    "window": {
+	"title": "CANtact",
+	"toolbar": true
+    },
+    "dependencies":
+    {
+	"canbus": ">=0.0.0",
+        "serialport": ">=1.7.4"
+    }
+}

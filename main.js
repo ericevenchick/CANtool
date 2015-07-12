@@ -1,3 +1,6 @@
+var canbus = require('canbus');
+var serialPort = require("serialport");
+
 var conn = null;
 window.count = 0;
 var bitRate = null; 
@@ -24,8 +27,7 @@ window.onload = function () {
         f.data = data;
         conn.send(f);
     });
-
-    chrome.serial.getDevices(onGetDevices);
+    serialPort.list(onGetDevices);
 
 }
 
@@ -62,14 +64,14 @@ function onReceive(e) {
             window.count++;
         }
 
-var onGetDevices = function (devicePaths) {
+var onGetDevices = function (err, devices) {
     deviceListDropdown = $('#deviceListDropdown');
 
-    for (var i=0; i < devicePaths.length; i++) {
-        var friendlyName = devicePaths[i].path.split('/');
+    for (var i=0; i < devices.length; i++) {
+        var friendlyName = devices[i].comName.split('/');
         friendlyName = friendlyName[friendlyName.length - 1];
 
-        deviceListDropdown.append('<li><a href="#" data-device-path="' + devicePaths[i].path + '" class="device-listing">' + friendlyName + '</a></li>')
+        deviceListDropdown.append('<li><a href="#" data-device-path="' + devices[i].comName + '" class="device-listing">' + friendlyName + '</a></li>')
     }
 
     $('.device-listing').on('click', function (){
