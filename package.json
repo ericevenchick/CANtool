@@ -4,7 +4,8 @@
     "main": "main.html",
     "window": {
 	"title": "CANtact",
-	"toolbar": true
+	"toolbar": true,
+	"width": 900
     },
     "dependencies":
     {
