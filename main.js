@@ -3,7 +3,7 @@ var serialPort = require("serialport");
 
 var conn = null;
 window.count = 0;
-var bitRate = null; 
+var bitRate = null;
 
 window.onload = function () {
     setupUI();
@@ -12,12 +12,12 @@ window.onload = function () {
 
     var txSend = document.getElementById('txSend');
     txSend.addEventListener('click', function(e) {
-	e.preventDefault();
-        var id = Number(document.getElementById('txId').value);
+        e.preventDefault();
+        var id = Number(document.getElementById('txID').value);
         var dlc = Number(document.getElementById('txDlc').value);
         var data = [];
 
-	   // convert data bytes from text inputs to byte array
+        // convert data bytes from text inputs to byte array
         for (var i=0; i < dlc; i++) {
             data.push(Number(document.getElementById('txB' + i).value));
         }
@@ -31,38 +31,39 @@ window.onload = function () {
 
 }
 
+var table = document.getElementById("msgs");
 function onReceive(e) {
-            var table = document.getElementById("msgs");
-            var row = table.insertRow(1);
-            var countCell = row.insertCell(0);
-            var tsCell = row.insertCell(1);
-            var idCell = row.insertCell(2);
-            var typeCell = row.insertCell(3);
-            var dlcCell = row.insertCell(4);
+    var row = document.createElement('tr');
+    var countCell = row.insertCell(0);
+    var tsCell = row.insertCell(1);
+    var idCell = row.insertCell(2);
+    var typeCell = row.insertCell(3);
+    var dlcCell = row.insertCell(4);
 
-            countCell.innerHTML = window.count;
-            idCell.innerHTML = "0x" + e.id.toString(16);
-            tsCell.innerHTML = (e.timestamp - window.startTime)/1000;
+    countCell.innerHTML = window.count;
+    idCell.innerHTML = "0x" + e.id.toString(16);
+    tsCell.innerHTML = (e.timestamp - window.startTime)/1000;
 
-            // set typestring for data type
-            // D = data, R = remote
-            if (e.is_remote) {
-                var typeStr = "R";
-            } else {
-                var typeStr = "D";
-            }
-            if (e.is_ext_id) {
-                typeStr += "X";
-            }
-            typeCell.innerHTML = typeStr;
-            dlcCell.innerHTML = e.dlc;
-            for (var i=0; i < e.dlc; i++) {
-                var byteCell = row.insertCell(5+i);
-                byteCell.innerHTML = "0x" + e.data[i].toString(16);
-            }
+    // set typestring for data type
+    // D = data, R = remote
+    if (e.is_remote) {
+    var typeStr = "R";
+    } else {
+    var typeStr = "D";
+    }
+    if (e.is_ext_id) {
+    typeStr += "X";
+    }
 
-            window.count++;
-        }
+    typeCell.innerHTML = typeStr;
+    dlcCell.innerHTML = e.dlc;
+    for (var i=0; i < e.dlc; i++) {
+        var byteCell = row.insertCell(5+i);
+        byteCell.innerHTML = "0x" + e.data[i].toString(16);
+    }
+    table.insertBefore(row, table.firstChild);
+    window.count++;
+}
 
 var onGetDevices = function (err, devices) {
     deviceListDropdown = $('#deviceListDropdown');
@@ -79,7 +80,7 @@ var onGetDevices = function (err, devices) {
             throw "already connected to device!";
         }
 
-        $(this).parent().addClass('active'); 
+        $(this).parent().addClass('active');
         $('#selectedDevice').text($(this).text());
 
         conn = new canbus.slcan($(this).attr('data-device-path'), 4, onReceive);
@@ -92,13 +93,13 @@ var onGetDevices = function (err, devices) {
 //sets up the UI elements on each panel/tool
 function setupUI() {
     //Log Table
-    $('#msgs').DataTable({
+    /*$('#msgs').DataTable({
         paging: false,
         info: false,
         searching: false,
         scrollY: "200px",
         order: [[ 0, "desc" ]]
-    });
+    });*/
 
     $('.soloPanel').on('click', function(){
         if($(this).children('.glyphicon-resize-full').hasClass('hidden')) {
@@ -116,14 +117,14 @@ function setupUI() {
             $('.panel').each(function(){
                 $(this).removeClass('hidden');
             })
-        } else {
-            $(this).parent().parent().parent().parent().toggleClass('soloPanel', 1000);
-            $('.panel').each(function(){
-                if(!$(this).hasClass('soloPanel')) {
-                    $(this).toggleClass('hidden');
-                }
-            })
-        }
+                } else {
+                    $(this).parent().parent().parent().parent().toggleClass('soloPanel', 1000);
+                    $('.panel').each(function(){
+                        if(!$(this).hasClass('soloPanel')) {
+                            $(this).toggleClass('hidden');
+                        }
+                    })
+                        }
     });
 
     $('.collapsePanel').on('click', function(){
@@ -135,7 +136,7 @@ function setupUI() {
             $(this).children('.glyphicon-chevron-up').addClass('hidden');
             $(this).children('.glyphicon-chevron-down').removeClass('hidden')
         }
-        
+
         $(this).parent().parent().parent().parent().children('.panel-body').toggleClass('hidden', 1000);
         $(this).parent().parent().parent().parent().toggleClass('panel-collapse', 1000);
     })
